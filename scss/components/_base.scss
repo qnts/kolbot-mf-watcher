@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'd2';
+  src: URL('Exocet2.ttf') format('truetype');
+}
+
+html, body {
+  font-size: 1rem;
+  font-family: $font;
+  background: $body-bg;
+  color: $body-color;
+}
+
+.font-d2 {
+  font-family: 'd2';
+}
+.ff-normal {
+  font-family: $font !important;
+}
+
+// colors
+@each $quality, $color in $quality-colors {
+  .color-#{$quality} {
+    color: $color;
+  }
+}
+
+.color-gray {
+  color: $gray;
+}

@@ -1,0 +1,25 @@
+$font: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+
+$body-bg: #1F262D;
+$body-color: #e1e1e1;
+
+$appbar-bg: #141619;
+
+$gray: #a7a7a7;
+
+// item quality
+$q-magic: #3b88ff;
+$q-normal: #fff;
+$q-rare: #ffe499;
+$q-set: #40ff1e;
+$q-unique: #f0a401;
+$q-crafted: #ffa0fc;
+
+$quality-colors: (
+  'magic': $q-magic,
+  'normal': $q-normal,
+  'rare': $q-rare,
+  'set': $q-set,
+  'unique': $q-unique,
+  'crafted': $q-crafted,
+);
