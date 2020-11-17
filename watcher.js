@@ -1,11 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const config = require('./config.json');
-const io = require('socket.io-client');
-
-const socket = io(config.socketio.host, {
-  path: config.socketio.path,
-});
+const config = require('./watcher-config.json');
 
 const itemLogFile = path.join(config.baseKolbotDirectory, 'd2bs/kolbot/logs/itemLog.txt');
 
@@ -57,18 +52,16 @@ const parseLine = line => {
 };
 
 function parseBuffer (buffer) {
-  if (socket.connected) {
-    buffer.toString().split(require('os').EOL).forEach(line => {
-      const l = line.trim();
-      if (!l) return;
-      const item = parseLine(l);
-      console.log(item);
-      if (config.ignoreCubingRecipe && item.isRecipe) return;
-      if (config.logWhat.includes(item.action)) {
-        socket.emit('new_item', JSON.stringify(item));
-      }
-    });
-  }
+  buffer.toString().split(require('os').EOL).forEach(line => {
+    const l = line.trim();
+    if (!l) return;
+    const item = parseLine(l);
+    console.log(item);
+    if (config.ignoreCubingRecipe && item.isRecipe) return;
+    if (config.logWhat.includes(item.action)) {
+      // socket.emit('new_item', JSON.stringify(item));
+    }
+  });
 }
 
 const main = async () => {

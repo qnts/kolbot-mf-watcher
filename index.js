@@ -5,6 +5,9 @@ const io = require('socket.io')(http);
 const path = require('path');
 const sassMiddleware = require('node-sass-middleware');
 
+// set engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'assets/views'));
 // sass
 app.use(
   sassMiddleware({
@@ -18,7 +21,7 @@ app.use(
 app.use(express.static(path.join( __dirname, 'public')));
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname  + '/index.html');
+  res.render('home');
 });
 
 io.on('connection', (socket) => {

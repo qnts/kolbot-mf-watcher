@@ -51,3 +51,33 @@ Run the following command (in a command line or powershell):
 `node scanner.js`
 
 This will watch for the itemLog.txt in your kolbot folder, any items found will be parsed and send to the web server.
+
+ws:
++ mongodb:
+    channel: { name, password, settings }
+    item: { channelId, ... }
++ api:
+    item crud (require channel.name, channel.password)
+    channel crud
++ view: ejs
+
+folder structure:
+/
+    assets/
+        views/ <-- ejs views
+        js/ <-- es6 frontend js, auto transpiled to /public/js/
+        scss/ <-- scss, auto transpiled into /public/css/
+    public/
+        fonts/
+        img/
+        vendor/
+    controllers/
+        channel.js
+        item.js
+    models/
+        mongo.js
+        Channel.js
+        Item.js
+    services/
+    watcher.js <-- watch for kolbot log
+    index.js <-- server
