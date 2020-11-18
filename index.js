@@ -9,12 +9,26 @@ import morgan from 'morgan';
 import { config } from './services/env';
 import channelsController from './controllers/channels';
 import itemsController from './controllers/items';
+import { Liquid } from 'liquidjs';
 import './models/mongo';
+
+const templateRoot = join(__dirname, 'assets/views');
+const liquid = new Liquid({
+  extname: '.liquid',
+  globals: {
+    app: {
+      name: config.appName,
+    },
+  },
+});
+liquid.registerFilter('document_title', v => v ? `${v} - ${config.appName}` : config.appName);
 
 app.use(morgan('dev'));
 // set engine
-app.set('view engine', 'ejs');
-app.set('views', join(__dirname, 'assets/views'));
+app.engine('liquid', liquid.express());
+app.set('view engine', 'liquid');
+app.set('views', templateRoot);
+
 app.use(express.static(join( __dirname, 'public')));
 // session
 app.use(session({ secret: config.sessionKey }));

@@ -9,6 +9,7 @@ const schema = new Schema({
   action: String,
   isRecipe: Boolean,
   level: Number,
+  timestamp: Date,
   channel: ObjectId,
 }, {
   timestamps: true,

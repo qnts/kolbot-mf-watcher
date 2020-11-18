@@ -1,7 +1,10 @@
-<%- include('layout/header') %>
+{% layout 'layout/default' %}
+{% block content %}
+
 <div class="container-fluid">
   <div class="row" id="items"></div>
 </div>
+{% raw %}
 <script id="template_item" type="text/template7">
   <div class="col-12 col-md-4 col-lg-3 col-item text-center" data-action="{{action}}" data-quality="{{quality}}">
     <div class="card text-white bg-dark">
@@ -9,26 +12,28 @@
       <div class="card-body">
         <ul class="stats">
           <li class="color-gray">
-            {{timestamp}}
+            {{ timestamp | date: '%Y-%m-%d %H:%M:%S'}}
           </li>
           <li class="color-gray">
             {{profile}}
           </li>
-          {{#each stats}}
-            {{#if @first}}{{else}}
+          {% for mod in stats %}
+            {%- if forloop.first %}{% else -%}
             <li>
-              {{this}}
+              {{mod}}
             </li>
-            {{/if}}
-          {{/each}}
+            {%- endif -%}
+          {% endfor %}
           <li class="color-gray">
-            Area: {{area}}{{#if isRecipe}} (Cubing){{/if}}
+            Area: {{area}}{% if isRecipe %} (Cubing){% endif %}
           </li>
         </ul>
       </div>
     </div>
   </div>
 </script>
+{% endraw %}
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/app.js"></script>
-<%- include('layout/footer') %>
+
+{% endblock %}
