@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'd2';
-  src: URL('Exocet2.ttf') format('truetype');
+  src: URL('../fonts/Exocet2.ttf') format('truetype');
 }
 
 html, body {
@@ -26,4 +26,7 @@ html, body {
 
 .color-gray {
   color: $gray;
+}
+.fz-14 {
+  font-size: 14px;
 }

@@ -1,28 +1,31 @@
-const express = require('express');
+import express from 'express';
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
-const path = require('path');
-const sassMiddleware = require('node-sass-middleware');
+import { join } from 'path';
+import session from 'express-session';
+import { json } from 'body-parser';
+import morgan from 'morgan';
+import { config } from './services/env';
+import channelsController from './controllers/channels';
+import itemsController from './controllers/items';
+import './models/mongo';
 
+app.use(morgan('dev'));
 // set engine
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'assets/views'));
-// sass
-app.use(
-  sassMiddleware({
-    src: __dirname + '/scss',
-    dest: __dirname + '/public',
-    outputStyle: 'compressed',
-    debug: true,
-  })
-);
-
-app.use(express.static(path.join( __dirname, 'public')));
+app.set('views', join(__dirname, 'assets/views'));
+app.use(express.static(join( __dirname, 'public')));
+// session
+app.use(session({ secret: config.sessionKey }));
+app.use(json());
 
 app.get('/', (req, res) => {
   res.render('home');
 });
+
+app.use('/api/channels', channelsController);
+app.use('/api/items', itemsController);
 
 io.on('connection', (socket) => {
   console.log('a user connected');

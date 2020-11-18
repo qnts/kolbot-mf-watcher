@@ -1,0 +1,4 @@
+{
+  "mongodb": "your_mongo_url",
+  "sessionKey": "secretSessionKEY"
+}
