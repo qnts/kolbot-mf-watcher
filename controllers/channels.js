@@ -15,7 +15,8 @@ router.post('/register', async (req, res) => {
   try {
     channel = new Channel({ name, password });
     await channel.save();
-    res.send(channel);
+    req.session.channel = channel.toObject();
+    res.send(req.session.channel);
   } catch (err) {
     res.status(500).send({
       message: 'Cannot create channel',
@@ -25,15 +26,15 @@ router.post('/register', async (req, res) => {
 
 router.post('/join', async function (req, res) {
   const { name, password } = req.body;
-  const channel = await Channel.findOne({ name, password }).exec();
+  const channel = await Channel.findOne({ name, password }).lean().exec();
   if (!channel) {
     return res.status(404).send({
       type: 'invalidCredential',
       message: 'Invalid channel',
     });
   }
-  req.session.channelId = channel.id;
-  res.send({ channelId: channel.id });
+  req.session.channel = channel;
+  res.send(channel);
 });
 
 router.post('/quit', async function (req, res) {

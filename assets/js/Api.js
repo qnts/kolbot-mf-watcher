@@ -33,6 +33,9 @@ export const Channel = {
   join(name, password) {
     return Server.post('channels/join', { name, password });
   },
+  leave() {
+    return Server.post('channels/quit');
+  },
   changePassword(name, oldPassword, newPassword) {
     return Server.put('channels/change-password', { name, oldPassword, newPassword });
   },

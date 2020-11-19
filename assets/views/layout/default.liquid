@@ -5,15 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ title | document_title }}</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"/>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/css/app.css" />
 </head>
-<body>
-  <header class="appbar">
-    <div class="container-fluid appbar-wrapper">
-      <h1 class="brand">{{app.name}}</h1>
+<body class="{{ bodyClasses }}">
+  {% unless hideAppbar %}
+  <nav class="appbar navbar navbar-dark sticky-top navbar-expand-lg">
+    <div class="navbar-brand">{{app.name}}</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      {% block appbar %}{% endblock %}
     </div>
-  </header>
+  </nav>
+  {% endunless %}
   {% block content %}{% endblock %}
 </body>
 </html>

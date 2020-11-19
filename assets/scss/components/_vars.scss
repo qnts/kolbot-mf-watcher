@@ -1,9 +1,13 @@
 $font: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 
-$body-bg: #1F262D;
-$body-color: #e1e1e1;
+$body-bg: #141619;
+$body-color: #b1b1b1;
 
-$appbar-bg: #141619;
+$appbar-bg: #1F262D;
+$dropdown-bg: #363e46;
+$dropdown-bg-hover: lighten($dropdown-bg, 5%);
+$dropdown-bg-active: darken($dropdown-bg, 5%);
+$dropdown-divider: #787d82;
 
 $gray: #a7a7a7;
 

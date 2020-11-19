@@ -35,7 +35,8 @@ app.use(session({ secret: config.sessionKey }));
 app.use(json());
 
 app.get('/', (req, res) => {
-  res.render('home');
+  console.log(req.session);
+  res.render('home', { channel: req.session.channel });
 });
 
 app.use('/api/channels', channelsController);

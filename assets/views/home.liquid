@@ -1,39 +1,76 @@
-{% layout 'layout/default' %}
-{% block content %}
+{% unless channel %}
+  {% assign hideAppbar = true %}
+{% endunless %}
 
-<div class="container-fluid">
-  <div class="row" id="items"></div>
-</div>
-{% raw %}
-<script id="template_item" type="text/template7">
-  <div class="col-12 col-md-4 col-lg-3 col-item text-center" data-action="{{action}}" data-quality="{{quality}}">
-    <div class="card text-white bg-dark">
-      <div class="card-header color-{{quality}}">{{action}}: {{name}} ({{level}})</div>
-      <div class="card-body">
-        <ul class="stats">
-          <li class="color-gray">
-            {{ timestamp | date: '%Y-%m-%d %H:%M:%S'}}
-          </li>
-          <li class="color-gray">
-            {{profile}}
-          </li>
-          {% for mod in stats %}
-            {%- if forloop.first %}{% else -%}
-            <li>
-              {{mod}}
+{% layout 'layout/default' %}
+
+{% block appbar %}
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{channel.name}}
+    </a>
+    <div class="dropdown-menu dropdown-menu-right dropdown-menu-dark" aria-labelledby="navbarDropdown">
+      <a class="dropdown-item" href="#" id="channel-change-password">Change Password</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#" id="channel-leave">Leave</a>
+    </div>
+  </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    {% if channel %}
+      <div class="row" id="items"></div>
+    {% else %}
+      <form class="form-channel" id="entry-channel-form">
+        <h4 class="heading">Join/Register a Channel</h4>
+        <div class="alert alert-primary" role="alert" id="alert"></div>
+        <div class="form-group">
+          <label for="channel-name">Name</label>
+          <input type="text" required class="form-control" autofocus placeholder="Channel Name" aria-label="Channel Name" id="channel-name" />
+        </div>
+        <div class="form-group">
+          <label for="channel-password">Password</label>
+          <input type="text" required class="form-control" placeholder="Channel Password" aria-label="Channel Password" id="channel-password" />
+        </div>
+        <div class="form-group d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" id="channel-register">Register</button>
+          <button type="submit" class="btn btn-dark" id="channel-join">Join &rarr;</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+  {% raw %}
+  <script id="template_item" type="text/template7">
+    <div class="col-12 col-md-4 col-lg-3 col-item text-center" data-action="{{action}}" data-quality="{{quality}}">
+      <div class="card text-white bg-dark">
+        <div class="card-header color-{{quality}}">{{action}}: {{name}} ({{level}})</div>
+        <div class="card-body">
+          <ul class="stats">
+            <li class="color-gray">
+              {{ timestamp | date: '%Y-%m-%d %H:%M:%S'}}
             </li>
-            {%- endif -%}
-          {% endfor %}
-          <li class="color-gray">
-            Area: {{area}}{% if isRecipe %} (Cubing){% endif %}
-          </li>
-        </ul>
+            <li class="color-gray">
+              {{profile}}
+            </li>
+            {% for mod in stats %}
+              {%- if forloop.first %}{% else -%}
+              <li>
+                {{mod}}
+              </li>
+              {%- endif -%}
+            {% endfor %}
+            <li class="color-gray">
+              Area: {{area}}{% if isRecipe %} (Cubing){% endif %}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
-</script>
-{% endraw %}
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/app.js"></script>
-
+  </script>
+  {% endraw %}
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/app.js"></script>
 {% endblock %}
