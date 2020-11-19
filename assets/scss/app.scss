@@ -1,6 +1,8 @@
-@import 'node_modules/bootstrap/scss/bootstrap';
-@import 'components/normalize';
 @import 'components/vars';
+// vendors
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'components/tippy';
+// ours
 @import 'components/base';
 @import 'components/appbar';
 @import 'components/item';

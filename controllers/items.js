@@ -4,7 +4,7 @@ import Item from '../models/Item';
 const router = Router();
 
 router.get('/', async function (req, res) {
-  if (!req.session.channelId) {
+  if (!req.session.channel) {
     return res.status(403).send({
       type: 'noChannel',
       message: 'No channel specified',
@@ -26,7 +26,7 @@ router.get('/', async function (req, res) {
   }
   const items = await Item.find(
     {
-      channel: req.session.channelId,
+      channel: req.session.channel._id,
       timestamp: {
         $gte: date.startOf('day').toDate(),
         $lte: moment(date).endOf('day').toDate()
@@ -41,14 +41,14 @@ router.get('/', async function (req, res) {
 });
 
 router.post('/', async function (req, res) {
-  if (!req.session.channelId) {
+  if (!req.session.channel) {
     return res.status(403).send({
       type: 'noChannel',
       message: 'No channel specified',
     });
   }
   const item = new Item(req.body);
-  item.channel = req.session.channelId;
+  item.channel = req.session.channel._id;
   try {
     await item.save();
     res.send();
@@ -61,7 +61,7 @@ router.post('/', async function (req, res) {
 });
 
 router.post('/batch', async function (req, res) {
-  if (!req.session.channelId) {
+  if (!req.session.channel) {
     return res.status(403).send({
       type: 'noChannel',
       message: 'No channel specified',
@@ -69,7 +69,7 @@ router.post('/batch', async function (req, res) {
   }
   try {
     const items = req.body.map(item => {
-      item.channel = req.session.channelId;
+      item.channel = req.session.channel._id;
       return {
         insertOne: {
           document: item,

@@ -1,31 +1,62 @@
 import $ from 'jquery';
 import 'bootstrap/dist/js/bootstrap.bundle';
-import { Channel, Item } from './Api';
+import tippy from 'tippy.js';
+import { Channel, Item, ErrorHandler } from './Api';
 import { liquid } from './vendor';
 
 $(() => {
-  const socket = io();
-  const template = liquid.parse($('#template_item').html());
-  const formatItem = item => {
-    item.hasStats = item.stats && item.stats.length;
-    return item;
+  // const socket = io();
+  const Template = {
+    parsed: {
+      itemDetail: liquid.parse($('#template_item_detail').html()),
+      item: liquid.parse($('#template_item').html()),
+    },
+    render: (template, context) => liquid.renderSync(Template.parsed[template], context),
   };
-  const renderItem = item => {
-    $('#items').prepend(liquid.renderSync(template, formatItem(item)));
+  const Alert = {
+    selector: '#alert',
+    clear() {
+      return $(Alert.selector)
+        .removeClass('alert-danger alert-success alert-warning alert-primary alert-secondary alert-info alert-light alert-dark')
+        .hide();
+    },
+    error(text) {
+      return Alert.clear().addClass('alert-danger').html(text).show();
+    },
+    success(text) {
+      return Alert.clear().addClass('alert-success').html(text).show();
+    },
+    warning(text) {
+      return Alert.clear().addClass('alert-warning').html(text).show();
+    },
   };
   // socket.on('new_item', item => {
   //   renderItem(JSON.parse(item));
   // });
-  // (async () => {
-  //   const channelId = await Channel.join('qnts028', 'quyet123');
-  //   const items = await Item.all('2020-11-15');
-  //   items.forEach(i => renderItem(i));
-  // })();
+  (async () => {
+    // const channelId = await Channel.join('qnts028', 'quyet123');
+    const items = await Item.all('2020-11-15');
+    items.forEach(item => {
+      const itemTooltip = Template.render('itemDetail', item);
+      const html = Template.render('item', item);
+      $('#items').append(html);
+      tippy(`[data-id='${item._id}']`, {
+        content: itemTooltip,
+        allowHTML: true,
+        theme: 'd2',
+        interactive: true,
+        maxWidth: 'none',
+      });
+    });
+  })();
   // join
   const validateForm = (name, password) => {
-    const alert = $('#alert');
     if (!name || !password) {
-      alert.show().text('Name and password are required');
+      Alert.error('Name and password are required');
+      return false;
+    }
+    if (!name.match('^[a-zA-Z0-9_-]+$')) {
+      Alert.error('Channel name can only contain alphanumeric characters, underscore (_) and dash (-)');
       return false;
     }
     return true;
@@ -41,7 +72,7 @@ $(() => {
       await Channel.join(name, password);
       window.location.reload();
     } catch (err) {
-      alert.show().text(err.message);
+      Alert.error(ErrorHandler.getMessage(err));
     }
   });
   $('#channel-register').on('click', async e => {
@@ -55,7 +86,7 @@ $(() => {
       await Channel.register(name, password);
       window.location.reload();
     } catch (err) {
-      alert.show().text(err.message);
+      Alert.error(ErrorHandler.getMessage(err));
     }
   });
   $('#channel-leave').on('click', async () => {

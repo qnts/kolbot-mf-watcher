@@ -38,7 +38,7 @@ router.post('/join', async function (req, res) {
 });
 
 router.post('/quit', async function (req, res) {
-  req.session.channelId = null;
+  req.session.channel = null;
   res.send();
 });
 

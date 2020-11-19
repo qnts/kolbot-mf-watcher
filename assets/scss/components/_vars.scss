@@ -1,3 +1,11 @@
+// bootstrap overrides
+$enable-rounded: false;
+$blue: #24568b;
+$green: #2b863f;
+$yellow: #b38b13;
+$red: #971320;
+$btn-border-width: 0;
+
 $font: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 
 $body-bg: #141619;
@@ -8,8 +16,6 @@ $dropdown-bg: #363e46;
 $dropdown-bg-hover: lighten($dropdown-bg, 5%);
 $dropdown-bg-active: darken($dropdown-bg, 5%);
 $dropdown-divider: #787d82;
-
-$gray: #a7a7a7;
 
 // item quality
 $q-magic: #3b88ff;

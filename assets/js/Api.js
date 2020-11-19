@@ -33,7 +33,7 @@ export const Channel = {
   join(name, password) {
     return Server.post('channels/join', { name, password });
   },
-  leave() {
+  quit() {
     return Server.post('channels/quit');
   },
   changePassword(name, oldPassword, newPassword) {
@@ -45,4 +45,9 @@ export const Item = {
   all(date, page, limit) {
     return Server.get('items', { date, page, limit });
   },
+};
+
+export const ErrorHandler = {
+  getMessage: err => err.responseJSON ? err.responseJSON.message : err.statusText,
+  getStatusCode: err => err.status,
 };

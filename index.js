@@ -3,7 +3,8 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 import { join } from 'path';
-import session from 'express-session';
+import expressSession from 'express-session';
+import sharedSession from 'express-socket.io-session';
 import { json } from 'body-parser';
 import morgan from 'morgan';
 import { config } from './services/env';
@@ -11,6 +12,14 @@ import channelsController from './controllers/channels';
 import itemsController from './controllers/items';
 import { Liquid } from 'liquidjs';
 import './models/mongo';
+
+const session = expressSession({
+  secret: config.sessionKey,
+  resave: true,
+  saveUninitialized: true,
+});
+// session
+app.use(session);
 
 const templateRoot = join(__dirname, 'assets/views');
 const liquid = new Liquid({
@@ -30,8 +39,6 @@ app.set('view engine', 'liquid');
 app.set('views', templateRoot);
 
 app.use(express.static(join( __dirname, 'public')));
-// session
-app.use(session({ secret: config.sessionKey }));
 app.use(json());
 
 app.get('/', (req, res) => {
@@ -41,6 +48,10 @@ app.get('/', (req, res) => {
 
 app.use('/api/channels', channelsController);
 app.use('/api/items', itemsController);
+
+io.use(sharedSession(session, {
+  autoSave:true
+}));
 
 io.on('connection', (socket) => {
   console.log('a user connected');
