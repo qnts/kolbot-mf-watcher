@@ -21,6 +21,11 @@ const session = expressSession({
 });
 // session
 app.use(session);
+// io middleware
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 const templateRoot = join(__dirname, 'assets/views');
 const liquid = new Liquid({
@@ -60,9 +65,16 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-  socket.on('new_item', item => {
-    console.log('receiving new item', item);
-    socket.broadcast.emit('new_item', item);
+  // frontend channel because they share the same session
+  socket.on('room join', () => {
+    const channel = socket.handshake.session.channel;
+    if (channel) {
+      socket.join(String(channel._id));
+      console.log('[front] joined', channel._id);
+      socket.emit('room join', 1);
+    } else {
+      socket.emit('room join', 0);
+    }
   });
 });
 

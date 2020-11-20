@@ -1,6 +1,8 @@
-{% unless channel %}
-  {% assign hideAppbar = true %}
-{% endunless %}
+{%- if channel -%}
+  {%- assign bodyClasses = 'channel-ready' -%}
+{%- else -%}
+  {%- assign hideAppbar = true -%}
+{%- endif -%}
 
 {% layout 'layout/default' %}
 
@@ -23,10 +25,19 @@
   <div class="container-fluid">
     {% if channel %}
       <div class="filter-panel mb-3">
-        <div class="filter-quality">
+        <div class="filter-group">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
           {% for quality in gameData.itemQualities %}
-            {{ quality }}
-          {% endfor %}
+            <label class="btn btn-sm btn-quality btn-quality-{{ quality }} active" data-tippy-content="Toggle {{ quality }}">
+              <input type="checkbox" name="quality-{{ quality }}" id="btn-quality-{{ quality }}" autocomplete="off" checked />
+              <span class="label-active font-serif">✓</span>
+              <span class="label-inactive font-serif">&nbsp;</span>
+            </label>
+            {% endfor %}
+          </div>
+          <div class="filter-group form-inline">
+            <input type="date" class="form-control form-control-sm" placeholder="Date" data-tippy-content="Date" />
+          </div>
         </div>
       </div>
       <div class="item-list" id="items"></div>
@@ -51,7 +62,7 @@
   </div>
   {% raw %}
   <script id="template_item" type="text/liquid">
-    <div class="item" data-id="{{ _id }}" data-quality="{{ quality }}" data-action="{{ action }}">
+    <div class="item {{ name | deco_hr_class }}" data-id="{{ _id }}" data-quality="{{ quality }}" data-action="{{ action }}">
       <div class="item-base">
         <div class="title">
           <span class="color-{{ quality }}">{{ name | deco_rune }}</span>
@@ -64,7 +75,7 @@
     </div>
   </script>
   <script id="template_item_detail" type="text/liquid">
-    <div class="item-detail">
+    <div class="item-detail {{ name | deco_hr_class }}">
       <div class="title font-d2">
         <span class="color-{{ quality }}">{{ name | deco_rune }}</span>
         <span class="fz-14 color-gray">({{ level }})</span>
@@ -73,7 +84,7 @@
         <ul class="stats">
           {% for mod in stats %}
             <li class="font-d2">
-              {{ mod | mod_color }}
+              {{ mod | mod_color: isRune }}
             </li>
           {% endfor %}
           <li class="st info">

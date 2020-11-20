@@ -18,7 +18,9 @@ $dropdown-bg-active: darken($dropdown-bg, 5%);
 $dropdown-divider: #787d82;
 
 // item quality
-$q-magic: #3b88ff;
+
+$q-lowquality: $body-color;
+$q-magic: #8c8eff;
 $q-normal: #fff;
 $q-rare: #ffe499;
 $q-set: #40ff1e;
@@ -26,8 +28,10 @@ $q-unique: #f0a401;
 $q-crafted: #ffa0fc;
 
 $quality-colors: (
-  'magic': $q-magic,
+  'lowquality': $q-lowquality,
   'normal': $q-normal,
+  'superior': $q-normal,
+  'magic': $q-magic,
   'rare': $q-rare,
   'set': $q-set,
   'unique': $q-unique,

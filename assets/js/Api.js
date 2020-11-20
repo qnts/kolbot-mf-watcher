@@ -51,3 +51,19 @@ export const ErrorHandler = {
   getMessage: err => err.responseJSON ? err.responseJSON.message : err.statusText,
   getStatusCode: err => err.status,
 };
+
+
+export const socket = io();
+socket.on('room join', joined => {
+  console.log('room status', joined);
+});
+export const goLive = (onNewItems) => {
+  socket.emit('room join');
+  socket.on('new items', items => {
+    console.log('new items', items.length);
+    onNewItems(items);
+  });
+};
+export const stopLive = () => {
+  socket.off('new items');
+};

@@ -1,4 +1,5 @@
 import { Schema, ObjectId, model } from 'mongoose';
+import { runes } from '../services/GameData';
 
 const schema = new Schema({
   name: String,

@@ -1,11 +1,12 @@
 import $ from 'jquery';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import tippy from 'tippy.js';
-import { Channel, Item, ErrorHandler } from './Api';
+import { Channel, Item, ErrorHandler, goLive } from './Api';
 import { liquid } from './vendor';
+import { runes } from '../../services/GameData';
 
 $(() => {
-  // const socket = io();
+  // public
   const Template = {
     parsed: {
       itemDetail: liquid.parse($('#template_item_detail').html()),
@@ -30,26 +31,7 @@ $(() => {
       return Alert.clear().addClass('alert-warning').html(text).show();
     },
   };
-  // socket.on('new_item', item => {
-  //   renderItem(JSON.parse(item));
-  // });
-  (async () => {
-    // const channelId = await Channel.join('qnts028', 'quyet123');
-    const items = await Item.all();
-    items.forEach(item => {
-      const itemTooltip = Template.render('itemDetail', item);
-      const html = Template.render('item', item);
-      $('#items').append(html);
-      tippy(`[data-id='${item._id}']`, {
-        content: itemTooltip,
-        allowHTML: true,
-        interactive: true,
-        maxWidth: 'none',
-        appendTo: document.body,
-      });
-    });
-  })();
-  // join
+  tippy('[data-tippy-content]');
   const validateForm = (name, password) => {
     if (!name || !password) {
       Alert.error('Name and password are required');
@@ -61,18 +43,14 @@ $(() => {
     }
     return true;
   };
-  $('#entry-channel-form').on('submit', async e => {
-    e.preventDefault();
-    const name = $('#channel-name').val().trim();
-    const password = $('#channel-password').val().trim();
-    if (!validateForm(name, password)) {
-      return;
-    }
-    try {
-      await Channel.join(name, password);
+  $('#channel-leave').on('click', async () => {
+    if (window.confirm('Are your sure?')) {
+      try {
+        await Channel.quit();
+      } catch (err) {
+        console.log(err);
+      }
       window.location.reload();
-    } catch (err) {
-      Alert.error(ErrorHandler.getMessage(err));
     }
   });
   $('#channel-register').on('click', async e => {
@@ -89,14 +67,54 @@ $(() => {
       Alert.error(ErrorHandler.getMessage(err));
     }
   });
-  $('#channel-leave').on('click', async () => {
-    if (window.confirm('Are your sure?')) {
-      try {
-        await Channel.quit();
-      } catch (err) {
-        console.log(err);
-      }
+  // join
+  $('#entry-channel-form').on('submit', async e => {
+    e.preventDefault();
+    const name = $('#channel-name').val().trim();
+    const password = $('#channel-password').val().trim();
+    if (!validateForm(name, password)) {
+      return;
+    }
+    try {
+      await Channel.join(name, password);
       window.location.reload();
+    } catch (err) {
+      Alert.error(ErrorHandler.getMessage(err));
     }
   });
+
+  // private
+  if ($('body').hasClass('channel-ready')) {
+    const renderItems = (items, prepend) => {
+      items.forEach(item => {
+        if (item.name === 'undefined') return;
+        item.isRune = runes.includes(item.name);
+        const itemTooltip = Template.render('itemDetail', item);
+        const html = Template.render('item', item);
+        if (prepend) {
+          $('#items').prepend(html);
+        } else {
+          $('#items').append(html);
+        }
+        tippy(`[data-id='${item._id}']`, {
+          content: itemTooltip,
+          allowHTML: true,
+          interactive: true,
+          maxWidth: 'none',
+          appendTo: document.body,
+        });
+      });
+    };
+    // default load
+    (async () => {
+      // const channelId = await Channel.join('qnts028', 'quyet123');
+      const items = await Item.all();
+      renderItems(items);
+
+      // load new item
+      goLive(items => {
+        renderItems(items.reverse(), true);
+      });
+    })();
+  }
 });

@@ -69,8 +69,9 @@ router.post('/', async function (req, res) {
 
 router.post('/batch', async function (req, res) {
   const { channel, items } = req.body;
+  const credential = { name: channel.name, password: channel.password };
   const selectedChannel = await Channel
-    .findOne({ name: channel.name, password: channel.password })
+    .findOne(credential)
     .select('_id')
     .lean()
     .exec();
@@ -81,15 +82,17 @@ router.post('/batch', async function (req, res) {
     });
   }
   try {
-    const newItems = items.map(item => {
-      item.channel = selectedChannel._id;
-      return {
-        insertOne: {
-          document: item,
-        },
-      };
-    });
-    await Item.bulkWrite(newItems);
+    // const newItems = items.map(item => {
+    //   item.channel = selectedChannel._id;
+    //   return {
+    //     insertOne: {
+    //       document: item,
+    //     },
+    //   };
+    // });
+    // await Item.bulkWrite(newItems);
+    console.log(111, typeof selectedChannel._id, items.length);
+    req.io.to(String(selectedChannel._id)).emit('new items', items);
     res.send();
   } catch (err) {
     res.status(500).send({

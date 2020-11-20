@@ -7,13 +7,22 @@
   margin-bottom: 1rem;
   background: $appbar-bg;
   display: inline-block;
+  border: 1px solid transparent;
   .item-base {
     padding: .5rem 1rem;
+  }
+  &.item-hr {
+    border-color: $q-unique;
   }
 }
 
 .item-detail {
   text-align: center;
+  padding: 1rem;
+  border: 1px solid transparent;
+  &.item-hr {
+    border-color: $q-unique;
+  }
   .title {
     margin-bottom: .5rem;
     font-weight: bold;
@@ -42,6 +51,9 @@
       }
       b {
         color: $white;
+      }
+      &:last-child {
+        margin-bottom: 0 !important;
       }
     }
   }

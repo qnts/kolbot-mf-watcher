@@ -1,4 +1,32 @@
 .filter-panel {
-  background: $appbar-bg;
+  border: 1px solid $appbar-bg;
   padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  .filter-group {
+    display: inline-block;
+  }
+}
+.btn.btn-quality {
+  margin-right: 1px;
+  font-size: 1rem;
+  @each $quality, $color in $quality-colors {
+    &.btn-quality-#{$quality} {
+      background: $color;
+      width: 2rem;
+      height: 2rem;
+      color: black;
+      .label-active {
+        display: none;
+      }
+      &.active {
+        .label-active {
+          display: block;
+        }
+        .label-inactive {
+          display: none;
+        }
+      }
+    }
+  }
 }

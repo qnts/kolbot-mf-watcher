@@ -16,6 +16,9 @@ html, body {
 .ff-normal {
   font-family: $font !important;
 }
+.font-serif {
+  font-family: serif !important;
+}
 
 // colors
 @each $quality, $color in $quality-colors {
@@ -32,7 +35,7 @@ html, body {
 }
 
 .mod-blue {
-  color: #8c8eff;
+  color: $q-magic;
 }
 .mod-red {
   color: #e47268;

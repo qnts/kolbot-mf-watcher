@@ -1,5 +1,5 @@
 import { Liquid } from 'liquidjs';
-import { runes } from '../../services/GameData';
+import { runes, itemRegex, isHR } from '../../services/GameData';
 
 export const liquid = new Liquid();
 
@@ -24,11 +24,15 @@ const whiteMods = [
 ];
 const redMods = /^\([a-z]+ only\)$/i;
 
-liquid.registerFilter('mod_color', mod => {
+liquid.registerFilter('mod_color', (mod, isRune) => {
   const lmod = mod.toLowerCase();
   let color = blue;
-  if (redMods.test(lmod)) {
+  if (isRune) {
+    color = white;
+  } else if (redMods.test(lmod)) {
     color = red;
+  } else if (itemRegex.test(lmod.replace(/\s+/, ''))) {
+    color = white;
   } else {
     for (const r of whiteMods) {
       if (r.test(lmod)) {
@@ -42,4 +46,8 @@ liquid.registerFilter('mod_color', mod => {
 
 liquid.registerFilter('deco_rune', name => {
   return runes.includes(name) ? `<span class="color-unique">${name}</span>` : name;
+});
+
+liquid.registerFilter('deco_hr_class', name => {
+  return isHR(name) ? 'item-hr' : '';
 });
