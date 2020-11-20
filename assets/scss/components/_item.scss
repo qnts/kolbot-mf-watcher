@@ -29,11 +29,19 @@
       margin-bottom: .25rem;
       &.s {
         border-bottom: 1px solid lighten(black, 20%);
-        padding-bottom: .25rem;
+        padding-bottom: .5rem;
       }
       &.st {
         border-top: 1px solid lighten(black, 20%);
-        padding-top: .25rem;
+        padding-top: .5rem;
+        margin-top: .25rem;
+      }
+      &.info {
+        display: flex;
+        justify-content: space-between;
+      }
+      b {
+        color: $white;
       }
     }
   }

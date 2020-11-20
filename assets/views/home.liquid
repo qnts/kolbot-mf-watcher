@@ -22,7 +22,13 @@
 {% block content %}
   <div class="container-fluid">
     {% if channel %}
-      <button class="btn btn-primary">Filter</button>
+      <div class="filter-panel mb-3">
+        <div class="filter-quality">
+          {% for quality in gameData.itemQualities %}
+            {{ quality }}
+          {% endfor %}
+        </div>
+      </div>
       <div class="item-list" id="items"></div>
     {% else %}
       <form class="form-channel" id="entry-channel-form">
@@ -48,42 +54,36 @@
     <div class="item" data-id="{{ _id }}" data-quality="{{ quality }}" data-action="{{ action }}">
       <div class="item-base">
         <div class="title">
-          <span class="color-{{ quality }}">{{ name }}</span>
+          <span class="color-{{ quality }}">{{ name | deco_rune }}</span>
           <span class="fz-14 color-gray">({{ level }})</span>
         </div>
         <div class="time color-gray fz-14">
-          <b>{{ action }}</b> {{ timestamp | date: '%m-%d %H:%M' }}
+          <b>{{ action }}</b> {{ timestamp | date: '%H:%M' }}
         </div>
       </div>
     </div>
   </script>
   <script id="template_item_detail" type="text/liquid">
-    <div class="item-detail font-d2">
-      <div class="title">
-        <span class="color-{{ quality }}">{{ name }}</span>
+    <div class="item-detail">
+      <div class="title font-d2">
+        <span class="color-{{ quality }}">{{ name | deco_rune }}</span>
         <span class="fz-14 color-gray">({{ level }})</span>
       </div>
       <div class="body">
         <ul class="stats">
           {% for mod in stats %}
-            {%- if forloop.first %}
-            <li class="color-gray">
-              {{ mod }}
-            </li>
-            {% else -%}
-            <li>
+            <li class="font-d2">
               {{ mod | mod_color }}
             </li>
-            {%- endif -%}
           {% endfor %}
-          <li class="color-gray st">
-            <b>{{ action }}</b> {{ timestamp | date: '%Y-%m-%d %H:%M' }}
+          <li class="st info">
+            <b>{{ action }}:</b><span>{{ timestamp | date: '%Y-%m-%d %H:%M' }}</span>
           </li>
-          <li class="color-gray">
-            <b>Profile:</b> {{ profile }}
+          <li class="info">
+            <b>Profile:</b><span>{{ profile }}</span>
           </li>
-          <li class="color-gray">
-            <b>Area:</b> {{ area }}{% if isRecipe %} (Cubing){% endif %}
+          <li class="info">
+            <b>Area:</b><span>{{ area }}{% if isRecipe %} (Cubing){% endif %}</span>
           </li>
         </ul>
       </div>

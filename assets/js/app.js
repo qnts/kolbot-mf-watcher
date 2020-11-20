@@ -35,7 +35,7 @@ $(() => {
   // });
   (async () => {
     // const channelId = await Channel.join('qnts028', 'quyet123');
-    const items = await Item.all('2020-11-15');
+    const items = await Item.all();
     items.forEach(item => {
       const itemTooltip = Template.render('itemDetail', item);
       const html = Template.render('item', item);
@@ -43,9 +43,9 @@ $(() => {
       tippy(`[data-id='${item._id}']`, {
         content: itemTooltip,
         allowHTML: true,
-        theme: 'd2',
         interactive: true,
         maxWidth: 'none',
+        appendTo: document.body,
       });
     });
   })();

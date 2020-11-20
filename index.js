@@ -12,6 +12,7 @@ import channelsController from './controllers/channels';
 import itemsController from './controllers/items';
 import { Liquid } from 'liquidjs';
 import './models/mongo';
+import * as gameData from './services/GameData';
 
 const session = expressSession({
   secret: config.sessionKey,
@@ -28,6 +29,7 @@ const liquid = new Liquid({
     app: {
       name: config.appName,
     },
+    gameData,
   },
 });
 liquid.registerFilter('document_title', v => v ? `${v} - ${config.appName}` : config.appName);

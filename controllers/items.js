@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import moment from 'moment';
 import Item from '../models/Item';
+import Channel from '../models/Channel';
 const router = Router();
 
 router.get('/', async function (req, res) {
@@ -13,7 +14,7 @@ router.get('/', async function (req, res) {
   let { date, page, limit } = req.query;
   // format inputs
   date = moment(date, 'YYYY-MM-DD');
-  if (!date) {
+  if (!date.isValid()) {
     date = moment();
   }
   page = parseInt(page);
@@ -22,7 +23,7 @@ router.get('/', async function (req, res) {
   }
   limit = parseInt(limit);
   if (!limit || limit > 50) {
-    limit = 20;
+    limit = 50;
   }
   const items = await Item.find(
     {
@@ -41,16 +42,22 @@ router.get('/', async function (req, res) {
 });
 
 router.post('/', async function (req, res) {
-  if (!req.session.channel) {
+  const { channel, item } = req.body;
+  const selectedChannel = await Channel
+    .findOne({ name: channel.name, password: channel.password })
+    .select('_id')
+    .lean()
+    .exec();
+  if (!selectedChannel) {
     return res.status(403).send({
       type: 'noChannel',
       message: 'No channel specified',
     });
   }
-  const item = new Item(req.body);
-  item.channel = req.session.channel._id;
+  const newItem = new Item(item);
+  newItem.channel = selectedChannel._id;
   try {
-    await item.save();
+    await newItem.save();
     res.send();
   } catch (err) {
     res.status(500).send({
@@ -61,22 +68,28 @@ router.post('/', async function (req, res) {
 });
 
 router.post('/batch', async function (req, res) {
-  if (!req.session.channel) {
+  const { channel, items } = req.body;
+  const selectedChannel = await Channel
+    .findOne({ name: channel.name, password: channel.password })
+    .select('_id')
+    .lean()
+    .exec();
+  if (!selectedChannel) {
     return res.status(403).send({
       type: 'noChannel',
       message: 'No channel specified',
     });
   }
   try {
-    const items = req.body.map(item => {
-      item.channel = req.session.channel._id;
+    const newItems = items.map(item => {
+      item.channel = selectedChannel._id;
       return {
         insertOne: {
           document: item,
         },
       };
     });
-    await Item.bulkWrite(items);
+    await Item.bulkWrite(newItems);
     res.send();
   } catch (err) {
     res.status(500).send({
