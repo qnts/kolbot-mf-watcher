@@ -215,9 +215,10 @@ $(() => {
       if (isPage('home')) {
         // load some items
         Item.all({ limit: 10 }).then(pagination => {
-          $('#items').html('');
-          renderItems(pagination.docs);
-          $('.loader').hide();
+          if (pagination.docs.length) {
+            $('#items').html('');
+            renderItems(pagination.docs);
+          }
         }).catch(err => {
           console.log(err);
         });
