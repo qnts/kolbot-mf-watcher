@@ -1,0 +1,28 @@
+{%- layout 'layout/default' -%}
+{% block content %}
+  <div class="container-fluid position-relative">
+    <div class="filter-panel mb-3">
+      <div class="filter-group">
+        <div class="btn-group btn-group-toggle" id="fillter-quality" data-toggle="buttons">
+        {% for quality in gameData.itemQualities %}
+          <label class="btn btn-sm btn-quality btn-quality-{{ quality }} active" data-tippy-content="Toggle {{ quality }}">
+            <input type="checkbox" name="quality-{{ quality }}" value="{{ quality }}" autocomplete="off" checked />
+            <span class="label-active font-serif">✓</span>
+            <span class="label-inactive font-serif">&nbsp;</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="filter-group form-inline">
+        <input type="date" class="form-control form-control-sm" id="filter-date" placeholder="Date" data-tippy-content="Date" />
+      </div>
+      <div class="filter-group">
+        <button type="button" class="btn btn-sm btn-primary" id="apply-filter">Apply</button>
+      </div>
+      <div class="filter-group ml-auto mr-0" id="pagination"></div>
+    </div>
+    <div class="item-list" id="items"></div>
+    <div class="loader"><div><div></div><div></div><div></div></div></div></div>
+  </div>
+  {%- include 'partials/item_template' -%}
+{%- endblock -%}

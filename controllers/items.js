@@ -4,14 +4,7 @@ import Item from '../models/Item';
 import Channel from '../models/Channel';
 const router = Router();
 
-router.get('/', async function (req, res) {
-  if (!req.session.channel) {
-    return res.status(403).send({
-      type: 'noChannel',
-      message: 'No channel specified',
-    });
-  }
-  let { date, page, limit } = req.query;
+export const getItems = (channelId, { date, page, limit, qualities }) => {
   // format inputs
   date = moment(date, 'YYYY-MM-DD');
   if (!date.isValid()) {
@@ -25,19 +18,37 @@ router.get('/', async function (req, res) {
   if (!limit || limit > 50) {
     limit = 50;
   }
-  const items = await Item.find(
-    {
-      channel: req.session.channel._id,
-      timestamp: {
-        $gte: date.startOf('day').toDate(),
-        $lte: moment(date).endOf('day').toDate()
-      },
-    })
-    .sort('-timestamp')
-    .limit(limit)
-    .skip((page - 1) * limit)
-    .lean()
-    .exec();
+  if (!qualities || !qualities.length) {
+    qualities = null;
+  }
+  const query = {
+    channel: channelId,
+    timestamp: {
+      $gte: date.startOf('day').toDate(),
+      $lte: moment(date).endOf('day').toDate()
+    },
+  };
+  if (qualities) {
+    query.quality = {
+      $in: qualities.split(','),
+    };
+  }
+  return Item.paginate(query, {
+    sort: '-timestamp',
+    page,
+    limit,
+    lean: true,
+  });
+};
+
+router.get('/', async function (req, res) {
+  if (!req.session.channel) {
+    return res.status(403).send({
+      type: 'noChannel',
+      message: 'No channel specified',
+    });
+  }
+  const items = await getItems(req.session.channel._id, req.query);
   res.send(items);
 });
 
@@ -81,25 +92,15 @@ router.post('/batch', async function (req, res) {
       message: 'No channel specified',
     });
   }
-  try {
-    // const newItems = items.map(item => {
-    //   item.channel = selectedChannel._id;
-    //   return {
-    //     insertOne: {
-    //       document: item,
-    //     },
-    //   };
-    // });
-    // await Item.bulkWrite(newItems);
-    console.log(111, typeof selectedChannel._id, items.length);
-    req.io.to(String(selectedChannel._id)).emit('new items', items);
+  Promise.all(items.map(item => {
+    item.channel = selectedChannel._id;
+    return Item.create(item).then(newItem => newItem).catch(() => null);
+  })).then(newItems => {
+    const result = newItems.filter(item => item ? true : false);
+    console.log(111, typeof selectedChannel._id);
+    req.io.to(String(selectedChannel._id)).emit('new items', result);
     res.send();
-  } catch (err) {
-    res.status(500).send({
-      type: 'serverError',
-      message: 'Internal server error',
-    });
-  }
+  }).catch(console.log);
 });
 
 export default router;

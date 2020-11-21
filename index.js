@@ -49,8 +49,19 @@ app.use(express.static(join( __dirname, 'public')));
 app.use(json());
 
 app.get('/', (req, res) => {
-  console.log(req.session);
-  res.render('home', { channel: req.session.channel });
+  if (req.session.channel) {
+    res.render('home', { currentPage: 'home', channel: req.session.channel });
+  } else {
+    res.render('channel');
+  }
+});
+
+app.get('/inventory', (req, res) => {
+  if (req.session.channel) {
+    res.render('inventory', { currentPage: 'inventory', channel: req.session.channel });
+  } else {
+    res.redirect('/');
+  }
 });
 
 app.use('/api/channels', channelsController);

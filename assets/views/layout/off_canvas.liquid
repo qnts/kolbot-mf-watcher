@@ -1,0 +1,42 @@
+<div class="off-canvas-overlay"></div>
+<sidebar class="off-canvas">
+{% if channel %}
+  <h5 class="heading">
+    <span class="close-menu">{{ channel.name }}</span>
+    <div class="action">
+      <button type="button" class="btn btn-sm channel-leave" title="Leave"><i class="mod-red icon-logout"></i></button>
+    </div>
+  </h5>
+  <div class="section">
+    <h6 class="sub">
+      Password
+      <div class="action">
+        <button type="button" class="btn btn-sm" title="Click to change password" data-toggle="collapse" data-target="#form-password"><i class="icon-pencil"></i></button>
+      </div>
+    </h6>
+    <form id="form-password" class="content collapse">
+      <div class="form-group">
+        <input type="text" id="old-password" class="form-control form-control-sm" placeholder="Old Password" />
+      </div>
+      <div class="form-group">
+        <input type="text" id="new-password" class="form-control form-control-sm" placeholder="New Password" />
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" data-toggle="collapse" data-target="#form-password" class="btn btn-sm btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-sm btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+  <div class="section">
+    <h6 class="sub">
+      Settings
+      <div class="action">
+        <button type="button" class="btn btn-sm" title="Click to change password" data-toggle="collapse" data-target="#form-settings"><i class="icon-cog"></i></button>
+      </div>
+    </h6>
+    <form id="form-settings" class="collapse show">
+      New setting will appear here
+    </form>
+  </div>
+{% endif %}
+</sidebar>

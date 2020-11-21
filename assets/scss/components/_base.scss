@@ -40,3 +40,23 @@ html, body {
 .mod-red {
   color: #e47268;
 }
+
+.page-item {
+  .page-link {
+    min-width: 1.75rem;
+  }
+  a.page-link {
+    background: $gray-800;
+    color: $body-color;
+    border-color: $gray-700;
+    &:hover {
+      background: $gray-600;
+      color: white;
+    }
+  }
+  &.disabled .page-link {
+    color: darken($body-color, 10%);
+    background: $gray-800;
+    border-color: $gray-700;
+  }
+}

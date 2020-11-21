@@ -21,6 +21,7 @@ const whiteMods = [
   /helms: /i,
   /shields: /i,
   /weapons: /i,
+  /keep in inventory/i,
 ];
 const redMods = /^\([a-z]+ only\)$/i;
 
@@ -50,4 +51,17 @@ liquid.registerFilter('deco_rune', name => {
 
 liquid.registerFilter('deco_hr_class', name => {
   return isHR(name) ? 'item-hr' : '';
+});
+
+liquid.registerFilter('page_label', (page, readable) => {
+  if (page === 'p') {
+    return readable ? 'Previous' : '&larr;';
+  }
+  if (page === 'n') {
+    return readable ? 'Next' : '&rarr;';
+  }
+  if (page === '...') {
+    return readable ? '' : '&hellip;';
+  }
+  return readable ? `Page ${page}` : page;
 });

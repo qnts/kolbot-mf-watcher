@@ -1,0 +1,74 @@
+{%- raw -%}
+  <script id="template_item" type="text/liquid">
+    <div class="item {{ name | deco_hr_class }}" data-id="{{ _id }}" data-quality="{{ quality }}" data-action="{{ action }}">
+      <div class="title">
+        <span class="color-{{ quality }}">{{ name | deco_rune }}</span>
+        <span class="fz-14 color-gray">({{ level }})</span>
+      </div>
+      <div class="time color-gray fz-14">
+        <b>{{ action }}</b> {{ timestamp | date: '%H:%M' }}
+      </div>
+    </div>
+  </script>
+  <script id="template_item_detail" type="text/liquid">
+    <div class="item-detail {{ name | deco_hr_class }}">
+      <div class="title font-d2">
+        <span class="color-{{ quality }}">{{ name | deco_rune }}</span>
+        <span class="fz-14 color-gray">({{ level }})</span>
+      </div>
+      <div class="body">
+        <ul class="stats">
+          {% for mod in stats %}
+            <li class="font-d2">
+              {{ mod | mod_color: isRune }}
+            </li>
+          {% endfor %}
+          <li class="st info">
+            <b>{{ action }}:</b><span>{{ timestamp | date: '%Y-%m-%d %H:%M' }}</span>
+          </li>
+          <li class="info">
+            <b>Profile:</b><span>{{ profile }}</span>
+          </li>
+          <li class="info">
+            <b>Area:</b><span>{{ area }}{% if isRecipe %} (Cubing){% endif %}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </script>
+  <script id="template_pagination" type="text/liquid">
+    {% if pages.length > 0 %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-sm mb-0">
+          {%- for p in pages -%}
+            <li class="page-item {% if p == page %}active{% endif %}{% if p == '...' %}disabled{% endif %}">
+              {% if p == page or p == '...' %}
+                <span class="page-link">
+                  {{ p | page_label }}
+                </span>
+              {% else %}
+                <a
+                  class="page-link"
+                  data-page="{{ p }}"
+                  href="#self" aria-label="{{ p }}"
+                  title="{{ p | page_label: true }}"
+                >
+                  {{ p | page_label }}
+                </a>
+              {% endif %}
+            </li>
+          {%- endfor -%}
+          <li class="page-item">
+            <a class="page-link dropdown-toggle" href="#self" role="button" id="dropdown-goto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+            <div class="dropdown-menu dropdown-menu-right p-0" aria-labelledby="dropdown-goto">
+              <div class="goto-page form-inline d-flex p-1">
+                <input class="form-control form-control-sm flex-fill" type="number" min="1" max="{{ total }}" step="1" value="{{ page }}" id="dropdown-gotopage" />
+                <button type="button" class="btn btn-sm btn-dark btn-primary flex-fill" id="dropdown-gotopage-button">Go</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    {% endif %}
+  </script>
+{%- endraw -%}

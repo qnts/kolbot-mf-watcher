@@ -1,0 +1,21 @@
+{%- assign hideAppbar = true -%}
+{%- layout 'layout/default' -%}
+
+{%- block content -%}
+<form class="form-channel" id="entry-channel-form">
+  <h4 class="heading">Join/Register a Channel</h4>
+  <div class="alert" role="alert" id="alert"></div>
+  <div class="form-group">
+    <label for="channel-name">Name</label>
+    <input type="text" required class="form-control" autofocus placeholder="Channel Name" aria-label="Channel Name" id="channel-name" />
+  </div>
+  <div class="form-group">
+    <label for="channel-password">Password</label>
+    <input type="text" required class="form-control" placeholder="Channel Password" aria-label="Channel Password" id="channel-password" />
+  </div>
+  <div class="form-group d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" id="channel-register">Register</button>
+    <button type="submit" class="btn btn-primary" id="channel-join">Join &rarr;</button>
+  </div>
+</form>
+{%- endblock -%}

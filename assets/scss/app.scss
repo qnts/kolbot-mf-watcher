@@ -2,9 +2,10 @@
 // vendors
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'components/tippy';
+@import 'components/icons';
 // ours
 @import 'components/base';
-@import 'components/appbar';
+@import 'components/layout';
 @import 'components/item';
 @import 'components/forms';
 @import 'components/filter';

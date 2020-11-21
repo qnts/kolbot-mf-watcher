@@ -1,0 +1,120 @@
+$canvas-width: 300px;
+$canvas-transition: 0.25s;
+
+.off-canvas-overlay {
+  position: fixed;
+  z-index: 1900;
+  top: 0;
+  left: 0;
+  width: 100vh;
+  height: 100vh;
+  display: none;
+  background: rgba(0,0,0, 0.6);
+}
+
+#main {
+  transition: margin-right $canvas-transition;
+}
+
+.appbar {
+  background-color: $appbar-bg;
+  margin-bottom: 1rem;
+}
+
+.off-canvas {
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  right: -$canvas-width;
+  width: $canvas-width;
+  height: 100vh;
+  overflow-x: hidden;
+  background-color: $body-bg;
+  transition: $canvas-transition;
+  .heading,
+  .sub {
+    margin-bottom: 0;
+    padding: .75rem 1rem;
+    background: lighten($body-bg, 10%);
+    display: flex;
+    align-items: center;
+    .action {
+      margin-left: auto;
+    }
+  }
+  .sub {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .content {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  form {
+    padding: 1rem;
+  }
+}
+
+// open state
+body.menu-open {
+  .off-canvas-overlay {
+    display: block;
+  }
+  .off-canvas {
+    right: 0;
+  }
+  @include media-breakpoint-up(sm) {
+    #main {
+      margin-right: $canvas-width;
+    }
+  }
+}
+
+.loader {
+  position: absolute;
+  z-index: 9999;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  > div {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    div {
+      display: inline-block;
+      position: absolute;
+      left: 8px;
+      width: 16px;
+      background: darken(white, 20%);
+      animation: loader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+    }
+    div:nth-child(1) {
+      left: 8px;
+      animation-delay: -0.24s;
+    }
+    div:nth-child(2) {
+      left: 32px;
+      animation-delay: -0.12s;
+    }
+    div:nth-child(3) {
+      left: 56px;
+      animation-delay: 0;
+    }
+  }
+}
+@keyframes loader {
+  0% {
+    top: 8px;
+    height: 64px;
+  }
+  50%, 100% {
+    top: 24px;
+    height: 32px;
+  }
+}

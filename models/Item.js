@@ -1,5 +1,5 @@
 import { Schema, ObjectId, model } from 'mongoose';
-import { runes } from '../services/GameData';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const schema = new Schema({
   name: String,
@@ -15,6 +15,8 @@ const schema = new Schema({
 }, {
   timestamps: true,
 });
+
+schema.plugin(mongoosePaginate);
 
 const Item = model('item', schema);
 

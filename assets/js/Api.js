@@ -42,8 +42,8 @@ export const Channel = {
 };
 
 export const Item = {
-  all(date, page, limit) {
-    return Server.get('items', { date, page, limit });
+  all({ date, page, limit, qualities }) {
+    return Server.get('items', { date, page, limit, qualities });
   },
 };
 
@@ -54,13 +54,16 @@ export const ErrorHandler = {
 
 
 export const socket = io();
-socket.on('room join', joined => {
-  console.log('room status', joined);
-});
-export const goLive = (onNewItems) => {
+export const goLive = (onNewItems, onJoinFail) => {
   socket.emit('room join');
+  socket.on('room join', joined => {
+    console.log('room status', joined);
+    if (!joined && onJoinFail) {
+      onJoinFail();
+    }
+  });
   socket.on('new items', items => {
-    console.log('new items', items.length);
+    console.log(new Date(), 'new items', items.length);
     onNewItems(items);
   });
 };

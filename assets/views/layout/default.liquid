@@ -7,18 +7,42 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"/>
   <link rel="stylesheet" href="/css/app.css" />
 </head>
-<body class="{{ bodyClasses }}">
-  {% unless hideAppbar %}
-  <nav class="appbar navbar navbar-dark sticky-top navbar-expand-lg">
-    <div class="navbar-brand">{{app.name}}</div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      {% block appbar %}{% endblock %}
-    </div>
-  </nav>
-  {% endunless %}
-  {% block content %}{% endblock %}
+<body class="{% if channel %}channel-ready{% endif %} page-{{ currentPage }} {{ bodyClasses }}">
+  <div id="main">
+    {% unless hideAppbar %}
+    <nav class="appbar navbar navbar-dark sticky-top navbar-expand-lg">
+      <div class="navbar-brand">{{app.name}}</div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      {% if channel %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link {% if currentPage == 'home' %}active{% endif %}" href="/" role="button">
+                Live
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if currentPage == 'inventory' %}active{% endif %}" href="/inventory" role="button">
+                Inventory
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link channel-go-settings" href="#" role="button" title="Channel menu">
+                {{channel.name}} <i class="icon-keyboard_arrow_right"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      {% endif %}
+    </nav>
+    {% endunless %}
+    {% block content %}{% endblock %}
+  </div>
+  {% include 'layout/off_canvas' %}
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/app.js"></script>
+  {% block js %}{% endblock %}
 </body>
 </html>
