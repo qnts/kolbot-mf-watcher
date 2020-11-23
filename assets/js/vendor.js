@@ -1,5 +1,6 @@
 import { Liquid } from 'liquidjs';
 import { runes, itemRegex, isHR } from '../../services/GameData';
+import moment from 'moment';
 
 export const liquid = new Liquid();
 
@@ -64,4 +65,8 @@ liquid.registerFilter('page_label', (page, readable) => {
     return readable ? '' : '&hellip;';
   }
   return readable ? `Page ${page}` : page;
+});
+
+liquid.registerFilter('moment', (date, format) => {
+  return moment(date).format(format);
 });

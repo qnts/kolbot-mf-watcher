@@ -6,7 +6,7 @@
         <span class="fz-14 color-gray">({{ level }})</span>
       </div>
       <div class="time color-gray fz-14">
-        <b>{{ action }}</b> {{ timestamp | date: '%H:%M' }}
+        <b>{{ action }}</b> {{ timestamp | moment: 'HH:MM' }}
       </div>
     </div>
   </script>
@@ -24,7 +24,7 @@
             </li>
           {% endfor %}
           <li class="st info">
-            <b>{{ action }}:</b><span>{{ timestamp | date: '%Y-%m-%d %H:%M' }}</span>
+            <b>{{ action }}:</b><span>{{ timestamp | moment: 'YYYY-MM-DD HH:mm' }}</span>
           </li>
           <li class="info">
             <b>Profile:</b><span>{{ profile }}</span>
