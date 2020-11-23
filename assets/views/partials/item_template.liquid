@@ -13,13 +13,13 @@
   <script id="template_item_detail" type="text/liquid">
     <div class="item-detail {{ name | deco_hr_class }}">
       <div class="title font-d2">
-        <span class="color-{{ quality }}">{{ name | deco_rune }}</span>
+        <span class="color-{{ quality }} text-uppercase">{{ name | deco_rune }}</span>
         <span class="fz-14 color-gray">({{ level }})</span>
       </div>
       <div class="body">
         <ul class="stats">
           {% for mod in stats %}
-            <li class="font-d2">
+            <li class="font-d2 text-uppercase">
               {{ mod | mod_color: isRune }}
             </li>
           {% endfor %}
