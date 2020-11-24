@@ -200,7 +200,7 @@ $(() => {
         $('#filter-date').val(date.format('YYYY-MM-DD'));
       }
       // convert to utc
-      query.date = date.utc().startOf('d').valueOf();
+      query.date = date.startOf('d').utc().valueOf();
       Item.all(query).then(pagination => {
         $('#items').html('');
         renderItems(pagination.docs);
@@ -215,7 +215,7 @@ $(() => {
       // const channelId = await Channel.join('qnts028', 'quyet123');
       if (isPage('home')) {
         // load some items
-        Item.all({ limit: 10, date: moment.utc().startOf('d').valueOf() }).then(pagination => {
+        Item.all({ limit: 10, date: moment.startOf('d').utc().valueOf() }).then(pagination => {
           if (pagination.docs.length) {
             $('#items').html('');
             renderItems(pagination.docs);
