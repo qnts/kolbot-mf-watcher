@@ -199,7 +199,8 @@ $(() => {
         date = moment(); // now
         $('#filter-date').val(date.format('YYYY-MM-DD'));
       }
-      query.date = date.format('YYYY-MM-DD');
+      // convert to utc
+      query.date = date.utc().startOf('d').valueOf();
       Item.all(query).then(pagination => {
         $('#items').html('');
         renderItems(pagination.docs);

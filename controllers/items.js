@@ -6,9 +6,9 @@ const router = Router();
 
 export const getItems = (channelId, { date, page, limit, qualities }) => {
   // format inputs
-  date = moment(date, 'YYYY-MM-DD');
+  date = moment(date);
   if (!date.isValid()) {
-    date = moment();
+    date = moment().startOf('d');
   }
   page = parseInt(page);
   if (!page) {
@@ -24,8 +24,8 @@ export const getItems = (channelId, { date, page, limit, qualities }) => {
   const query = {
     channel: channelId,
     timestamp: {
-      $gte: date.startOf('day').toDate(),
-      $lte: moment(date).endOf('day').toDate()
+      $gte: date.toDate(),
+      $le: moment(date).add(24, 'd').toDate(),
     },
   };
   if (qualities) {
