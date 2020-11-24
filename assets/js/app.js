@@ -215,7 +215,7 @@ $(() => {
       // const channelId = await Channel.join('qnts028', 'quyet123');
       if (isPage('home')) {
         // load some items
-        Item.all({ limit: 10, date: moment.startOf('d').utc().valueOf() }).then(pagination => {
+        Item.all({ limit: 10, date: moment().startOf('d').utc().valueOf() }).then(pagination => {
           if (pagination.docs.length) {
             $('#items').html('');
             renderItems(pagination.docs);
