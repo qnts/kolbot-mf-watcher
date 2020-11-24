@@ -25,7 +25,7 @@ export const getItems = (channelId, { date, page, limit, qualities }) => {
     channel: channelId,
     timestamp: {
       $gte: date.toDate(),
-      $le: moment(date).add(24, 'd').toDate(),
+      $lte: moment(date).add(24, 'd').toDate(),
     },
   };
   if (qualities) {
