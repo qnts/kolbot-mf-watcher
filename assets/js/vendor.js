@@ -24,7 +24,7 @@ const whiteMods = [
   /weapons: /i,
   /keep in inventory/i,
 ];
-const redMods = /^\([a-z]+ only\)$/i;
+const redMods = /^\([a-z]+ only\)|unidentified$/i;
 
 liquid.registerFilter('mod_color', (mod, isRune) => {
   const lmod = mod.toLowerCase();
