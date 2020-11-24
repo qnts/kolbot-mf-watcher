@@ -210,6 +210,22 @@ $(() => {
         console.log(err);
       });
     };
+    $('#filter-prev-date').on('click', () => {
+      let date = moment($('#filter-date').val());
+      if (!date.isValid()) {
+        date = moment(); // now
+      }
+      $('#filter-date').val(date.subtract(1, 'd').format('YYYY-MM-DD'));
+      loadItems();
+    });
+    $('#filter-next-date').on('click', () => {
+      let date = moment($('#filter-date').val());
+      if (!date.isValid()) {
+        date = moment(); // now
+      }
+      $('#filter-date').val(date.add(1, 'd').format('YYYY-MM-DD'));
+      loadItems();
+    });
     // default load
     (async () => {
       // const channelId = await Channel.join('qnts028', 'quyet123');
