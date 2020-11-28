@@ -39,7 +39,7 @@ export const getItems = (channelId, { date, page, limit, qualities }) => {
     sort: '-timestamp',
     page,
     limit,
-    lean: true,
+    lean: { virtuals: true },
   });
 };
 

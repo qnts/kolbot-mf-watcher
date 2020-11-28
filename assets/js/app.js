@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import tippy from 'tippy.js';
 import moment from 'moment';
 import { Channel, Item, ErrorHandler, goLive } from './Api';
-import { liquid } from './vendor';
+import { formatItemStats, liquid } from './vendor';
 import { runes } from '../../services/GameData';
 
 const isTouch = Boolean('ontouchstart' in window || navigator.msMaxTouchPoints);
@@ -136,6 +136,7 @@ $(() => {
     let page = 1;
     const renderItems = (items, prepend) => {
       items.forEach(item => {
+        formatItemStats(item);
         if (item.name === 'undefined') return;
         item.isRune = runes.includes(item.name);
         const itemTooltip = Template.render('itemDetail', item);
@@ -216,6 +217,7 @@ $(() => {
         date = moment(); // now
       }
       $('#filter-date').val(date.subtract(1, 'd').format('YYYY-MM-DD'));
+      page = 1;
       loadItems();
     });
     $('#filter-next-date').on('click', () => {
@@ -224,6 +226,7 @@ $(() => {
         date = moment(); // now
       }
       $('#filter-date').val(date.add(1, 'd').format('YYYY-MM-DD'));
+      page = 1;
       loadItems();
     });
     // default load

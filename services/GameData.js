@@ -13,6 +13,7 @@ export const itemQualities = [
   'lowquality', 'normal',
   'superior', 'magic', 'set',
   'rare', 'unique', 'crafted',
+  'runeword',
 ];
 
 export const actions = [
