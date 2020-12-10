@@ -25,6 +25,9 @@ html, body {
   .color-#{$quality} {
     color: $color;
   }
+  .border-#{$quality} {
+    border: 1px solid $color !important;
+  }
 }
 
 .color-gray {

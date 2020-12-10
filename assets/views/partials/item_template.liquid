@@ -1,6 +1,6 @@
 {%- raw -%}
   <script id="template_item" type="text/liquid">
-    <div class="item {{ name | deco_hr_class }}" data-id="{{ _id }}" data-quality="{{ quality }}" data-action="{{ action }}">
+    <div class="item {{ name | deco_hr_class }} {{ border }}" data-id="{{ _id }}" data-quality="{{ quality }}" data-action="{{ action }}">
       <div class="title">
         <span class="{% if isRuneword %}color-runeword{% else %}color-{{ quality }}{% endif %}">{{ name | deco_rune }}</span>
         <span class="fz-14 color-gray">({{ level }})</span>
@@ -14,7 +14,7 @@
     </div>
   </script>
   <script id="template_item_detail" type="text/liquid">
-    <div class="item-detail {{ name | deco_hr_class }}">
+    <div class="item-detail {{ name | deco_hr_class }} {{ border }}">
       <div class="title font-d2">
         <span class="{% if isRuneword %}color-runeword{% else %}color-{{ quality }}{% endif %} text-uppercase">{{ name | deco_rune }}</span>
         <span class="fz-14 color-gray">({{ level }})</span>

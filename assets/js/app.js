@@ -4,7 +4,7 @@ import tippy from 'tippy.js';
 import moment from 'moment';
 import { Channel, Item, ErrorHandler, goLive } from './Api';
 import { formatItemStats, liquid } from './vendor';
-import { runes } from '../../services/GameData';
+import { runes, isHR } from '../../services/GameData';
 
 const isTouch = Boolean('ontouchstart' in window || navigator.msMaxTouchPoints);
 
@@ -139,6 +139,9 @@ $(() => {
         formatItemStats(item);
         if (item.name === 'undefined') return;
         item.isRune = runes.includes(item.name);
+        if (item.action.match(/kept|shopped/i) && !item.isRecipe && !isHR(item.name)) {
+          item.border = `border-${item.quality}`;
+        }
         const itemTooltip = Template.render('itemDetail', item);
         const html = Template.render('item', item);
         if (prepend) {
