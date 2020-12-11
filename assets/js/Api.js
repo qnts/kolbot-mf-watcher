@@ -58,6 +58,7 @@ export const goLive = (onNewItems, onJoinFail) => {
   socket.emit('room join');
   socket.on('room join', joined => {
     console.log('room status', joined);
+    $('#icon-live').removeClass('text-danger').addClass('rotate');
     if (!joined && onJoinFail) {
       onJoinFail();
     }
@@ -65,6 +66,12 @@ export const goLive = (onNewItems, onJoinFail) => {
   socket.on('new items', items => {
     console.log(new Date(), 'new items', items.length);
     onNewItems(items);
+  });
+  socket.on('disconnect', function () {
+    $('#icon-live').removeClass('rotate').addClass('text-danger');
+  });
+  socket.on('connect_error', function () {
+    $('#icon-live').removeClass('rotate').addClass('text-danger');
   });
 };
 export const stopLive = () => {
