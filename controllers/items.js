@@ -4,7 +4,7 @@ import Item from '../models/Item';
 import Channel from '../models/Channel';
 const router = Router();
 
-export const getItems = (channelId, { date, page, limit, qualities }) => {
+export const getItems = (channelId, { date, page, limit, qualities, s }) => {
   // format inputs
   date = moment.utc(new Date(parseInt(date)));
   if (!date.isValid()) {
@@ -25,11 +25,26 @@ export const getItems = (channelId, { date, page, limit, qualities }) => {
     $gte: date,
     $lte: moment(date).add(23, 'h').add(59, 'minutes'),
   };
-  console.log(timestamp);
   const query = {
     channel: channelId,
     timestamp,
   };
+  if (s) {
+    query.$or = [
+      {
+        name: {
+          $regex: s,
+          $options: 'i',
+        },
+      },
+      {
+        stats: {
+          $regex: s,
+          $options: 'i',
+        },
+      },
+    ];
+  }
   if (qualities) {
     query.quality = {
       $in: qualities.split(','),

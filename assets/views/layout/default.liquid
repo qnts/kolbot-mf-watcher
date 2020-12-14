@@ -17,7 +17,12 @@
       </button>
       {% if channel %}
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
+          {% if currentPage != 'home' %}
+          <form class="form-inline ml-auto" id="form-search">
+            <input class="form-control form-control-sm" type="search" value="{{ requestQuery.s }}" placeholder="Search" aria-label="Search" />
+          </form>
+          {% endif %}
+          <ul class="navbar-nav {% if currentPage == 'home' %} ml-auto{% endif %}">
             <li class="nav-item">
               <a class="nav-link {% if currentPage == 'home' %}active{% endif %}" href="/" role="button">
                 <i class="icon-globe" id="icon-live"></i>

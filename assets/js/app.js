@@ -198,6 +198,10 @@ $(() => {
       if (qualities.length) {
         query.qualities = qualities.join(',');
       }
+      const search = $('#form-search input').val().trim();
+      if (search) {
+        query.s = search;
+      }
       let date = moment($('#filter-date').val());
       if (!date.isValid()) {
         date = moment(); // now
@@ -256,6 +260,11 @@ $(() => {
             alert('You must select at least 1 quality');
             return;
           }
+          loadItems();
+        });
+        // search
+        $('#form-search').on('submit', e => {
+          e.preventDefault();
           loadItems();
         });
       }

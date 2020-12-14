@@ -42,8 +42,8 @@ export const Channel = {
 };
 
 export const Item = {
-  all({ date, page, limit, qualities }) {
-    return Server.get('items', { date, page, limit, qualities });
+  all({ date, page, limit, qualities, s }) {
+    return Server.get('items', { date, page, limit, qualities, s });
   },
 };
 

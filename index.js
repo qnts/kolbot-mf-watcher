@@ -50,7 +50,11 @@ app.use(json());
 
 app.get('/', (req, res) => {
   if (req.session.channel) {
-    res.render('home', { currentPage: 'home', channel: req.session.channel });
+    res.render('home', {
+      requestQuery: req.query,
+      currentPage: 'home',
+      channel: req.session.channel,
+    });
   } else {
     res.render('channel');
   }
@@ -58,7 +62,11 @@ app.get('/', (req, res) => {
 
 app.get('/inventory', (req, res) => {
   if (req.session.channel) {
-    res.render('inventory', { currentPage: 'inventory', channel: req.session.channel });
+    res.render('inventory', {
+      requestQuery: req.query,
+      currentPage: 'inventory',
+      channel: req.session.channel,
+    });
   } else {
     res.redirect('/');
   }
@@ -89,6 +97,6 @@ io.on('connection', (socket) => {
   });
 });
 
-http.listen(3000, () => {
+http.listen(process.env.PORT || 3000, () => {
   console.log('listening on *:3000');
 });
