@@ -24,9 +24,10 @@ $q-magic: #8c8eff;
 $q-normal: #fff;
 $q-rare: #ffe499;
 $q-set: #00c400;
-$q-unique: #f0a401;
+$q-unique: #dba378;
 $q-crafted: #ffa0fc;
-$q-runeword: lighten($red, 10%);
+$q-rune: #f0a401;
+$q-runeword: lighten($red, 15%);
 
 $quality-colors: (
   'lowquality': $q-lowquality,
@@ -37,5 +38,6 @@ $quality-colors: (
   'set': $q-set,
   'unique': $q-unique,
   'crafted': $q-crafted,
+  'rune': $q-rune,
   'runeword': $q-runeword,
 );

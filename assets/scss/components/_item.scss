@@ -8,7 +8,7 @@
     background: $appbar-bg;
     border: 1px solid transparent;
     &.item-hr {
-      border-color: $q-unique;
+      border-color: $q-rune;
     }
     .title, .time {
       display: flex;
@@ -33,7 +33,7 @@
   padding: 1rem;
   border: 1px solid transparent;
   &.item-hr {
-    border-color: $q-unique;
+    border-color: $q-rune;
   }
   .title {
     margin-bottom: .5rem;

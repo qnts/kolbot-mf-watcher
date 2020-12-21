@@ -52,7 +52,7 @@ liquid.registerFilter('mod_color', (mod, isRune) => {
 });
 
 liquid.registerFilter('deco_rune', name => {
-  return runes.includes(name) ? `<span class="color-unique">${name}</span>` : name;
+  return runes.includes(name) ? `<span class="color-rune">${name}</span>` : name;
 });
 
 liquid.registerFilter('deco_hr_class', name => {
